@@ -156,6 +156,11 @@ def dictionary_to_object(data, property_type, response_properties, parent_classe
                 generated_code = ' ' * indent
                 response_properties[parent_classes[0]].append(generated_code)
                 if parent_classes:
+                    if key not in parent_classes[-1].attribute_name_map:
+                        raise KeyError(
+                            f'Could not find attribute "{key}"="{data[key]}" of parent ' +
+                            f'"{parent_classes[-1].__name__}" at ' +
+                            f'"{"/".join((p.__name__ for p in parent_classes[1:]))}"')
                     generated_code = '{0}={1!r}'.format(parent_classes[-1].attribute_name_map[key], data[key])
                     response_properties[parent_classes[0]].append(generated_code)
                 else:
